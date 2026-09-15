@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 .app-shell {
   min-height: 100vh;
   display: grid;
@@ -36,8 +37,8 @@ h1 {
   margin: 18px 0 12px;
   font-size: clamp(2.25rem, 4vw, 3.5rem);
   line-height: 1.05;
-  letter-spacing: -0.06em;
   color: #0f172a;
+  font-family: "Lobster two";
 }
 
 .subtitle {
@@ -109,4 +110,24 @@ h1 {
   #analyze {
     width: 100%;
   }
+}
+
+.loader{
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 155, 251, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 30px auto;
+}
+
+@keyframes spin{
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+.hidden{
+  display: none;
 }
