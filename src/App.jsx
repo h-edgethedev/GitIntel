@@ -3,7 +3,7 @@ import { useState } from "react"
 import axios from "axios"
 
 function App() {
-  const [username, setUsername] = useState("")
+  const [username, setUsername] = useState("tech-sis123")
   const [loading, setLoading] = useState(false)
   const [userData, setUserData] = useState(null)
   const url = `https://api.github.com/users/`
@@ -54,11 +54,17 @@ function App() {
         </div>
         {
           userData && (
-              <section className="resultsDiv">
-                <img src={userData.avatar_url} alt={`${userData.username}'s avatar`} id="avatar"/>
-                p
-              </section>
-            )
+            <section className="resultsDiv">
+              <img src={userData.avatar_url} alt={`${userData.username}'s avatar`} id="avatar" />
+              <p className="user-info" id="name">{userData.name}</p>
+              <p id="username" className="user-info">@{username}</p>
+              <h3 className="user-info" id="bio">{userData.bio} </h3>
+              <p className="user-info" id="location">{userData.location} </p>
+              <p className="user-info" id="followers">{userData.followers} followers</p>
+              <p className="user-info" id="following">{userData.following} following</p>
+              <p className="user-info" id="public_repos">{userData.public_repos} Public Repositories</p>
+            </section>
+          )
         }
       </section>
     </main>
