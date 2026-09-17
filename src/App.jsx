@@ -1,33 +1,25 @@
 import "./App.css"
 import { useState } from "react"
 import axios from "axios"
+import { fetchData } from "./fetchdata"
 
 function App() {
   const [username, setUsername] = useState("tech-sis123")
   const [loading, setLoading] = useState(false)
   const [userData, setUserData] = useState(null)
-  const url = `https://api.github.com/users/`
-  const fetchData = async () => {
-    setLoading(true)
-    try {
-      const response = await axios.get(`${url}${username}`)
-      console.log(response.data)
-      setUserData(response.data)
-    } catch (error) {
-      console.error(error.message)
-      setUserData(null)
-    }
-    finally {
-      setLoading(false)
-    }
-  }
-
   const handleClick = () => {
     if (username.trim() === "") {
       alert("Search Input is empty")
       return;
     }
-    fetchData()
+    fetchData(username, userData, loading, setUserData, setLoading)
+    const graphQlUrl = "https://api.github.com/graphql"
+    const getContributionData = async () => {
+      const query = `
+      query()
+      `
+      const response = await axios.post()
+    }
   }
 
   return (
