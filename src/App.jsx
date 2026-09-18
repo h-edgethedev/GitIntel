@@ -2,6 +2,7 @@ import "./App.css"
 import { useState } from "react"
 import axios from "axios"
 import { fetchData } from "./fetchdata"
+import {getContributionData} from "./fetchContributions"
 
 function App() {
   const [username, setUsername] = useState("tech-sis123")
@@ -13,13 +14,7 @@ function App() {
       return;
     }
     fetchData(username, userData, loading, setUserData, setLoading)
-    const graphQlUrl = "https://api.github.com/graphql"
-    const getContributionData = async () => {
-      const query = `
-      query()
-      `
-      const response = await axios.post()
-    }
+    getContributionData(username)
   }
 
   return (
