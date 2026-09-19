@@ -38,7 +38,7 @@ export const getContributionData = async (username) => {
                 }
             }
         )
-
+        // console.log(response.data)   
         return response.data
     }
     catch (error) {

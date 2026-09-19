@@ -4,7 +4,7 @@ export const fetchData = async (username, userData, loading, setUserData, setLoa
     setLoading(true)
     try {
         const response = await axios.get(`${url}${username}`)
-        console.log(response.data)
+        // console.log(response.data)
         setUserData(response.data)
     } catch (error) {
         console.error(error.message)

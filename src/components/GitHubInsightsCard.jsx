@@ -1,14 +1,13 @@
-import "./App.css"
 import { useState } from "react"
-import { fetchData } from "./fetchdata"
-import { getContributionData } from "./fetchContributions"
+import { fetchData } from "../fetchdata"
+import { getContributionData } from "../fetchContributions"
 
-
-function App() {
+function GitHubInsightsCard() {
   const [username, setUsername] = useState("tech-sis123")
   const [loading, setLoading] = useState(false)
   const [userData, setUserData] = useState(null)
   const [calendar, setCalendar] = useState(null)
+  const [darkMode, setDarkMode] = useState(true)
 
   const handleClick = async () => {
     if (username.trim() === "") {
@@ -21,21 +20,58 @@ function App() {
 
     const contributionData = await getContributionData(username)
     const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
- 
+
     if (contributionCalendar) {
       setCalendar(contributionCalendar)
     }
   }
 
+  const monthLabels = (() => {
+    if (!calendar?.weeks?.length) return []
+
+    const labels = []
+    const seen = new Set()
+
+    calendar.weeks.forEach((week, index) => {
+      const firstDay = week.contributionDays?.[0]?.date
+      if (!firstDay) return
+
+      const date = new Date(firstDay)
+      const key = `${date.getFullYear()}-${date.getMonth()}`
+
+      if (!seen.has(key)) {
+        seen.add(key)
+        labels.push({
+          index,
+          label: date.toLocaleString("en-US", { month: "short" }),
+        })
+      }
+    })
+
+    return labels
+  })()
+
   const profileName = userData?.name || userData?.login || username
   const profileBio = userData?.bio || "No bio provided yet."
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell ${darkMode ? "theme-dark" : "theme-light"}`}>
       <section className="analyzer-card">
-        <span className="eyebrow">Developer insights</span>
+        <div className="top-bar">
+          <span className="eyebrow">Developer insights</span>
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={() => setDarkMode((prev) => !prev)}
+            aria-label="Toggle theme"
+          >
+            {darkMode ? "☀️ Light" : "🌙 Dark"}
+          </button>
+        </div>
+
         <h1>GitIntel</h1>
         <p className="subtitle">Analyze a GitHub developer&apos;s profile and discover their coding activity.</p>
+
         <div className="search-row">
           <input
             type="search"
@@ -96,6 +132,37 @@ function App() {
               <span className="contribution-total">{calendar.totalContributions}</span>
             </div>
             <p className="panel-copy">Total contributions recorded in the last year.</p>
+
+            <div className="contribution-graph" style={{ "--total-weeks": calendar.weeks.length }}>
+              <div className="month-row">
+                {monthLabels.map((month) => (
+                  <span
+                    key={`${month.label}-${month.index}`}
+                    className="month-label"
+                    style={{ gridColumn: `${month.index + 1} / span 1` }}
+                  >
+                    {month.label}
+                  </span>
+                ))}
+              </div>
+
+              <div className="heatmap">
+                {calendar.weeks.flatMap((week, weekIndex) =>
+                  week.contributionDays.map((day, dayIndex) => (
+                    <span
+                      key={`${day.date}-${weekIndex}`}
+                      className="day-cell"
+                      title={`${day.date}: ${day.contributionCount} contributions`}
+                      style={{
+                        backgroundColor: day.color || (darkMode ? "#161b22" : "#ebedf0"),
+                        gridColumn: weekIndex + 1,
+                        gridRow: dayIndex + 1,
+                      }}
+                    />
+                  ))
+                )}
+              </div>
+            </div>
           </section>
         )}
       </section>
@@ -103,4 +170,4 @@ function App() {
   )
 }
 
-export default App;
+export default GitHubInsightsCard
