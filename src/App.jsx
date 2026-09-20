@@ -5,7 +5,7 @@ import { getContributionData } from "./fetchContributions"
 
 
 function App() {
-  const [username, setUsername] = useState("tech-sis123")
+  const [username, setUsername] = useState("h-edgethedev")
   const [loading, setLoading] = useState(false)
   const [userData, setUserData] = useState(null)
   const [calendar, setCalendar] = useState(null)
@@ -91,7 +91,7 @@ function App() {
               <p className="bio">{profileBio}</p>
 
               <div className="meta-row">
-                <span>{userData.location || "Location unavailable"}</span>
+              <span>{`Location: ${userData.location}` || "Location unavailable"}</span>
                 <span>{userData.company || "No company listed"}</span>
               </div>
 
@@ -133,16 +133,25 @@ function App() {
               </div>
               <div className="heatmap">
                 {
-                  calendar.weeks.flatMap((week, weekIndex)=> 
-                  week.contributionDays.map((day))
-                  )
+                  calendar.weeks.flatMap((week, weekIndex) =>
+                    week.contributionDays.map((day, dayIndex) => (
+                      <span key={`${day.date}-${weekIndex}`}
+                        className="day-cell"
+                        title={`${day.date}: ${day.contributionCount} contributions`}
+                        style={{
+                          backgroundColor: day.color === "#ebedf0" ? "#151B23" : day.color,
+                          gridColumn: weekIndex + 1,
+                gridRow: dayIndex + 1,
+                        }}></span>
+              ))
+              )
                 }
-              </div>
             </div>
+          </div>
           </section>
         )}
-      </section>
-    </main>
+    </section>
+    </main >
   )
 }
 

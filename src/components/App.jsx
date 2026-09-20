@@ -154,7 +154,7 @@ function App() {
                       className="day-cell"
                       title={`${day.date}: ${day.contributionCount} contributions`}
                       style={{
-                        backgroundColor: day.color || (darkMode ? "#161b22" : "#ebedf0"),
+                        backgroundColor: day.color==="#ebedf0" ? "#151B23": day.color,
                         gridColumn: weekIndex + 1,
                         gridRow: dayIndex + 1,
                       }}
