@@ -2,7 +2,7 @@ import { useState } from "react"
 import { fetchData } from "../fetchdata"
 import { getContributionData } from "../fetchContributions"
 
-function GitHubInsightsCard() {
+function App() {
   const [username, setUsername] = useState("tech-sis123")
   const [loading, setLoading] = useState(false)
   const [userData, setUserData] = useState(null)
@@ -170,4 +170,4 @@ function GitHubInsightsCard() {
   )
 }
 
-export default GitHubInsightsCard
+export default App;

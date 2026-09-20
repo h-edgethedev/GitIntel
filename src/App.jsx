@@ -29,14 +29,15 @@ function App() {
 
   const profileName = userData?.name || userData?.login || username
   const profileBio = userData?.bio || "No bio provided yet."
-  console.log(calendar)
+  console.log(calendar) 
+
   const monthLabels = (()=>{
     if(!calendar?.weeks?.length) return []
     const labels = []
     const seen = new Set()
 
     calendar.weeks.forEach((week, index)=>{
-      const firstDay = week.contributionDays?.[0].date
+      const firstDay = week?.contributionDays?.[0].date
       if(!firstDay) return 
       const date = new Date(firstDay)
       const key = `${date.getFullYear()}-${date.getMonth()}`
@@ -51,7 +52,7 @@ function App() {
     })
 
     return labels
-  })
+  })()
 
   return (
     <main className="app-shell">
