@@ -21,7 +21,7 @@ function App() {
 
     const contributionData = await getContributionData(username)
     const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
- 
+
     if (contributionCalendar) {
       setCalendar(contributionCalendar)
     }
@@ -29,24 +29,24 @@ function App() {
 
   const profileName = userData?.name || userData?.login || username
   const profileBio = userData?.bio || "No bio provided yet."
-  console.log(calendar) 
+  console.log(calendar)
 
-  const monthLabels = (()=>{
-    if(!calendar?.weeks?.length) return []
+  const monthLabels = (() => {
+    if (!calendar?.weeks?.length) return []
     const labels = []
     const seen = new Set()
 
-    calendar.weeks.forEach((week, index)=>{
+    calendar.weeks.forEach((week, index) => {
       const firstDay = week?.contributionDays?.[0].date
-      if(!firstDay) return 
+      if (!firstDay) return
       const date = new Date(firstDay)
       const key = `${date.getFullYear()}-${date.getMonth()}`
 
-      if(!seen.has(key)){
+      if (!seen.has(key)) {
         seen.add(key)
         labels.push({
           index,
-          label: date.toLocaleString("en-US", {month: "short"})
+          label: date.toLocaleString("en-US", { month: "short" })
         })
       }
     })
@@ -120,6 +120,25 @@ function App() {
               <span className="contribution-total">{calendar.totalContributions}</span>
             </div>
             <p className="panel-copy">Total contributions recorded in the last year.</p>
+            <div className="contribution-graph">
+              <div className="month-row">
+                {
+                  monthLabels.map((month) => (
+                    <span key={`${month.label}-${month.index}`}
+                      className="month-label"
+                      style={{ gridColumn: `${month.index + 1}/span 1` }}>
+                      {month.label}
+                    </span>
+                  ))}
+              </div>
+              <div className="heatmap">
+                {
+                  calendar.weeks.flatMap((week, weekIndex)=> 
+                  week.contributionDays.map((day))
+                  )
+                }
+              </div>
+            </div>
           </section>
         )}
       </section>

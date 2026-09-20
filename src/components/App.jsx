@@ -145,7 +145,7 @@ function App() {
                   </span>
                 ))}
               </div>
-
+ 
               <div className="heatmap">
                 {calendar.weeks.flatMap((week, weekIndex) =>
                   week.contributionDays.map((day, dayIndex) => (
