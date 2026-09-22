@@ -112,7 +112,7 @@ function App() {
             </div>
           </section>
         )}
-
+    {/* Contribution Graph */}
         {calendar && (
           <section className="contribution-panel">
             <div className="panel-head">
