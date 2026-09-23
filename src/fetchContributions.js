@@ -2,7 +2,8 @@ import axios from "axios"
 const token = import.meta.env.VITE_GITHUB_TOKEN
 
 const graphQlUrl = "https://api.github.com/graphql"
-export const getContributionData = async (username) => {
+export const getContributionData = async (username, loading, setLoading) => {
+    setLoading(true)
     const query = `
     query($username: String!) {
         user(login: $username) {
@@ -38,10 +39,13 @@ export const getContributionData = async (username) => {
                 }
             }
         )
-        // console.log(response.data)   
-        return response.data
+            setLoading(false)
+            // console.log(response.data)   
+            return response.data
+  
     }
     catch (error) {
+        setLoading(false)
         console.error(error.response?.data || error.message)
     }
     console.log("Token exists:", !!token)

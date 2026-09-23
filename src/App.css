@@ -394,3 +394,12 @@ h1 {
 .hidden {
   display: none;
 }
+
+#analyze:disabled{
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#analyze:disabled:hover{
+  transform: none;
+}

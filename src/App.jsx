@@ -5,7 +5,7 @@ import { getContributionData } from "./fetchContributions"
 
 
 function App() {
-  const [username, setUsername] = useState("h-edgethedev")
+  const [username, setUsername] = useState("")
   const [loading, setLoading] = useState(false)
   const [userData, setUserData] = useState(null)
   const [calendar, setCalendar] = useState(null)
@@ -19,7 +19,7 @@ function App() {
     setCalendar(null)
     await fetchData(username, userData, loading, setUserData, setLoading)
 
-    const contributionData = await getContributionData(username)
+    const contributionData = await getContributionData(username, loading, setLoading)
     const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
 
     if (contributionCalendar) {
@@ -91,7 +91,7 @@ function App() {
               <p className="bio">{profileBio}</p>
 
               <div className="meta-row">
-              <span>{`Location: ${userData.location}` || "Location unavailable"}</span>
+                <span>{`Location: ${userData.location}` || "Location unavailable"}</span>
                 <span>{userData.company || "No company listed"}</span>
               </div>
 
@@ -112,7 +112,7 @@ function App() {
             </div>
           </section>
         )}
-    {/* Contribution Graph */}
+        {/* Contribution Graph */}
         {calendar && (
           <section className="contribution-panel">
             <div className="panel-head">
@@ -141,16 +141,16 @@ function App() {
                         style={{
                           backgroundColor: day.color === "#ebedf0" ? "#151B23" : day.color,
                           gridColumn: weekIndex + 1,
-                gridRow: dayIndex + 1,
+                          gridRow: dayIndex + 1,
                         }}></span>
-              ))
-              )
+                    ))
+                  )
                 }
+              </div>
             </div>
-          </div>
           </section>
         )}
-    </section>
+      </section>
     </main >
   )
 }
