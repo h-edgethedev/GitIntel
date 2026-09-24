@@ -1,53 +1,22 @@
-import axios from "axios"
-const token = import.meta.env.VITE_GITHUB_TOKEN
+import { fetchContributionCalendar } from "./services/githubApi";
 
-const graphQlUrl = "https://api.github.com/graphql"
 export const getContributionData = async (username, loading, setLoading) => {
-    setLoading(true)
-    const query = `
-    query($username: String!) {
-        user(login: $username) {
-            contributionsCollection {
-                contributionCalendar {
-                    totalContributions
-                    weeks {
-                        contributionDays {
-                            contributionCount
-                            date
-                            contributionLevel
-                            color
-                        }
-                    }
-                }
-            }
-        }
-    }
-`
-    const variables = {
-        username: username
-    }
+    setLoading?.(true);
     try {
-        const response = await axios.post(
-            graphQlUrl,
-            {
-                query: query,
-                variables: variables,
+        const calendar = await fetchContributionCalendar(username);
+        return {
+            data: {
+                user: {
+                    contributionsCollection: {
+                        contributionCalendar: calendar,
+                    },
+                },
             },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        )
-            setLoading(false)
-            // console.log(response.data)   
-            return response.data
-  
+        };
+    } catch (error) {
+        console.error("getContributionData error:", error);
+        return null;
+    } finally {
+        setLoading?.(false);
     }
-    catch (error) {
-        setLoading(false)
-        console.error(error.response?.data || error.message)
-    }
-    console.log("Token exists:", !!token)
-    console.log("Token length:", token?.length)
-}
+};
