@@ -91,8 +91,8 @@ function App() {
               <p className="bio">{profileBio}</p>
 
               <div className="meta-row">
-                <span>{`Location: ${userData.location}` || "Location unavailable"}</span>
-                <span>{userData.company || "No company listed"}</span>
+                <span>{userData.location ? `Location: ${userData.location}` : "Location unavailable"}</span>
+                <span>{userData.company ? `Company: ${userData.company}` : "No company listed"}</span>
               </div>
 
               <div className="stats-grid">
