@@ -17,14 +17,28 @@ function App() {
     }
 
     setCalendar(null)
-    await fetchData(username, userData, loading, setUserData, setLoading)
-
-    const contributionData = await getContributionData(username, loading, setLoading)
-    const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
-
-    if (contributionCalendar) {
-      setCalendar(contributionCalendar)
+    var cacheKey = `github:${username}`
+    if (localStorage.getItem(cacheKey)) {
+      const cachedData = JSON.parse(localStorage.getItem(cacheKey))
+      setUserData(cachedData)
+      const contributionData = await getContributionData(username, loading, setLoading)
+      const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
+      if (contributionCalendar) {
+        setCalendar(contributionCalendar)
+      }
     }
+    else {
+      await fetchData(username, userData, loading, setUserData, setLoading)
+
+      const contributionData = await getContributionData(username, loading, setLoading)
+      const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
+
+      if (contributionCalendar) {
+        setCalendar(contributionCalendar)
+      }
+    }
+
+
   }
 
   const profileName = userData?.name || userData?.login || username
