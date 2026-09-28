@@ -5,7 +5,7 @@ export const fetchData = async (username, userData, loading, setUserData, setLoa
     try {
         const response = await axios.get(`${url}${username}`)
         // console.log(response.data)
-        localStorage.setItem(`github:${username}`, JSON.stringify(response.data))
+        localStorage.setItem(`github-${username.trim().toLowerCase()}`, JSON.stringify(response.data))
         setUserData(response.data)
 
     } catch (error) {

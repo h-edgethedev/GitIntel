@@ -18,26 +18,18 @@ function App() {
 
     setCalendar(null)
     var cacheKey = `github:${username}`
-    if (localStorage.getItem(cacheKey)) {
-      const cachedData = JSON.parse(localStorage.getItem(cacheKey))
+    const cachedData = JSON.parse(localStorage.getItem(cacheKey))
+    if (cachedData) {
       setUserData(cachedData)
-      const contributionData = await getContributionData(username, loading, setLoading)
-      const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
-      if (contributionCalendar) {
-        setCalendar(contributionCalendar)
-      }
     }
     else {
       await fetchData(username, userData, loading, setUserData, setLoading)
-
-      const contributionData = await getContributionData(username, loading, setLoading)
-      const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
-
-      if (contributionCalendar) {
-        setCalendar(contributionCalendar)
-      }
     }
-
+    const contributionData = await getContributionData(username, loading, setLoading)
+    const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
+    if (contributionCalendar) {
+      setCalendar(contributionCalendar)
+    }
 
   }
 
