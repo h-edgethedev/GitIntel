@@ -2,14 +2,15 @@ import "./App.css"
 import { useState } from "react"
 import { fetchData } from "./fetchdata"
 import { getContributionData } from "./fetchContributions"
-
+const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
+const PROFILE_CACHE_TTL = 60*60*1000
 
 function App() {
   const [username, setUsername] = useState("")
   const [loading, setLoading] = useState(false)
   const [userData, setUserData] = useState(null)
   const [calendar, setCalendar] = useState(null)
-  const CACHE_TTL = 10 * 60 * 1000
+
   const handleClick = async () => {
     if (username.trim() === "") {
       alert("Search Input is empty")
@@ -121,6 +122,7 @@ function App() {
                 </div>
               </div>
             </div>
+            <button id="refresh">Refresh Data</button>
           </section>
         )}
         {/* Contribution Graph */}
