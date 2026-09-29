@@ -18,8 +18,10 @@ function App() {
 
     setCalendar(null)
     var cacheKey = `github:${username}`
+    const CACHE_TTL = 10 * 60 * 1000
     const cachedData = JSON.parse(localStorage.getItem(cacheKey))
-    if (cachedData) {
+
+    if (cachedData.data && (Date.now() - cachedData.cachedAt) <= CACHE_TTL) {
       setUserData(cachedData)
     }
     else {
