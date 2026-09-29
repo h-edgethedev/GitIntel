@@ -9,7 +9,7 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [userData, setUserData] = useState(null)
   const [calendar, setCalendar] = useState(null)
-
+  const CACHE_TTL = 10 * 60 * 1000
   const handleClick = async () => {
     if (username.trim() === "") {
       alert("Search Input is empty")
@@ -17,15 +17,18 @@ function App() {
     }
 
     setCalendar(null)
-    var cacheKey = `github:${username}`
-    const CACHE_TTL = 10 * 60 * 1000
-    const cachedData = JSON.parse(localStorage.getItem(cacheKey))
+    var cacheKey = `github-${username.trim().toLowerCase()}`
 
-    if (cachedData.data && (Date.now() - cachedData.cachedAt) <= CACHE_TTL) {
-      setUserData(cachedData)
+    const storedData = localStorage.getItem(cacheKey)
+    const cachedData = storedData ? JSON.parse(storedData) : null
+
+    if (cachedData && cachedData.data && (Date.now() - cachedData.cachedAt) <= CACHE_TTL) {
+      setUserData(cachedData.data)
+      console.log(`Data Obtained from local storage`)
     }
     else {
       await fetchData(username, userData, loading, setUserData, setLoading)
+      console.log(`Data obtained from Github API`)
     }
     const contributionData = await getContributionData(username, loading, setLoading)
     const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
@@ -37,7 +40,7 @@ function App() {
 
   const profileName = userData?.name || userData?.login || username
   const profileBio = userData?.bio || "No bio provided yet."
-  console.log(calendar)
+  // console.log(calendar)
 
   const monthLabels = (() => {
     if (!calendar?.weeks?.length) return []
