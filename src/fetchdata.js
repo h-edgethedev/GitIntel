@@ -9,7 +9,7 @@ export const fetchData = async (username, userData, loading, setUserData, setLoa
             data: response.data,
             cachedAt: Date.now()
         }
-
+        console.log(response.data)       
         localStorage.setItem(`github-${username.trim().toLowerCase()}`, JSON.stringify(cacheData))
         setUserData(response.data)
 

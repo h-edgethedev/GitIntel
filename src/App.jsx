@@ -10,10 +10,14 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [userData, setUserData] = useState(null)
   const [calendar, setCalendar] = useState(null)
+  const [toast, setToast] = useState(null)
 
   const handleClick = async () => {
     if (username.trim() === "") {
-      alert("Search Input is empty")
+      setToast("Please enter a Github username")
+      setTimeout(() => {
+        setToast("")
+      }, 2000)
       return
     }
 
@@ -26,6 +30,7 @@ function App() {
     if (cachedData && cachedData.data && (Date.now() - cachedData.cachedAt) <= CONTRIBUTION_CACHE_TTL) {
       setUserData(cachedData.data)
       console.log(`Data Obtained from local storage`)
+      console.log(userData)
     }
     else {
       await fetchData(username, userData, loading, setUserData, setLoading)
@@ -88,6 +93,12 @@ function App() {
 
   return (
     <main className="app-shell">
+      {
+        toast && (
+          <div className="toast">
+            {toast}
+          </div>
+        )}
       <section className="analyzer-card">
         <span className="eyebrow">Developer insights</span>
         <h1>GitIntel</h1>
@@ -108,14 +119,15 @@ function App() {
           <div className={`loader ${loading ? "" : "hidden"}`}></div>
         </div>
 
+
         {userData && (
           <section className="results-card">
             <div className="profile-header">
               <img src={userData.avatar_url} alt={`${profileName}'s avatar`} id="avatar" />
               <div className="profile-copy">
                 <p className="profile-label">GitHub profile</p>
-                <h2>{profileName}</h2>
-                <p className="username">@{userData.login || username}</p>
+                <h2>{profileName}</h2> 
+                <a href={userData.html_url} className="username" target="_blank">@{userData.login || username}</a>
               </div>
             </div>
 
