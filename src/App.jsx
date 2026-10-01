@@ -3,7 +3,7 @@ import { useState } from "react"
 import { fetchData } from "./fetchdata"
 import { getContributionData } from "./fetchContributions"
 const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
-const PROFILE_CACHE_TTL = 60*60*1000
+const PROFILE_CACHE_TTL = 60 * 60 * 1000
 
 function App() {
   const [username, setUsername] = useState("")
@@ -19,11 +19,11 @@ function App() {
 
     setCalendar(null)
     var cacheKey = `github-${username.trim().toLowerCase()}`
-
+    //Fetching Profile Data:
     const storedData = localStorage.getItem(cacheKey)
     const cachedData = storedData ? JSON.parse(storedData) : null
 
-    if (cachedData && cachedData.data && (Date.now() - cachedData.cachedAt) <= CACHE_TTL) {
+    if (cachedData && cachedData.data && (Date.now() - cachedData.cachedAt) <= CONTRIBUTION_CACHE_TTL) {
       setUserData(cachedData.data)
       console.log(`Data Obtained from local storage`)
     }
@@ -31,16 +31,31 @@ function App() {
       await fetchData(username, userData, loading, setUserData, setLoading)
       console.log(`Data obtained from Github API`)
     }
-
-    const contributionCacheKey = `github-contributions-${username}`
+    // Fetching and storing Contribution Data
+    const contributionCacheKey = `github-contributions-${username.trim().toLowerCase()}`
     const storedContributionData = localStorage.getItem(contributionCacheKey)
-    const contributionCacheData = storedContributionData? JSON.parse(storedContributionData) : null
-    if(contributionCacheData && )
-    const contributionData = await getContributionData(username, loading, setLoading)
-    const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
-    if (contributionCalendar) {
-      setCalendar(contributionCalendar)
+    const contributionCacheData = storedContributionData ? JSON.parse(storedContributionData) : null
+    if (contributionCacheData && contributionCacheData.data && (Date.now() - contributionCacheData.cachedAt) <= CONTRIBUTION_CACHE_TTL) {
+      setCalendar(contributionCacheData.data)
+      console.log(`Contribution Data obtained from Local storage`)
     }
+
+    else {
+      const contributionData = await getContributionData(username, loading, setLoading)
+      const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
+      if (contributionCalendar) {
+        setCalendar(contributionCalendar)
+        localStorage.setItem(
+          contributionCacheKey,
+          JSON.stringify({
+            data: contributionCalendar,
+            cachedAt: Date.now()
+          })
+        )
+        console.log(`Contribution obtained from Github GraphQL`)
+      }
+    }
+
 
   }
 
