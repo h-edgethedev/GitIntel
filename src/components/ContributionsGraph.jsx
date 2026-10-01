@@ -22,11 +22,29 @@ export function ContributionGraph({ calendar }) {
         return labels
     })()
 
+    const contributionDays = calendar?.weeks?.flatMap(week=> week.contributionDays) || []
+    // console.log(contributionDays)
+    const totalContribution = contributionDays.reduce((sum, day)=>{
+        return sum += day.contributionCount
+    }, 0)
+
+    const averageContribution = (totalContribution/contributionDays.length).toFixed(2)
+    
+
     return (
         <section className="contribution-panel">
             <div className="panel-head">
                 <span className="panel-tag">Contributions</span>
-                <span className="contribution-total">{calendar.totalContributions}</span>
+                <div className="contribution-stats-row">
+                    <div className="contribution-stat">
+                        <span className="contribution-stat-label">Total</span>
+                        <span className="contribution-total">{calendar.totalContributions}</span>
+                    </div>
+                    <div className="contribution-stat">
+                        <span className="contribution-stat-label">Avg / day</span>
+                        <span className="contribution-avg">{averageContribution}</span>
+                    </div>
+                </div>
             </div>
             <p className="panel-copy">Total contributions recorded in the last year.</p>
             <div className="contribution-graph">

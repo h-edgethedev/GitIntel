@@ -32,7 +32,7 @@ function App() {
     if (cachedData && cachedData.data && (Date.now() - cachedData.cachedAt) <= CONTRIBUTION_CACHE_TTL) {
       setUserData(cachedData.data)
       console.log(`Data Obtained from local storage`)
-      console.log(userData)
+      // console.log(userData)
     }
     else {
       await fetchData(username, userData, loading, setUserData, setLoading)
@@ -70,7 +70,6 @@ function App() {
   const profileBio = userData?.bio || "No bio provided yet."
   // console.log(calendar)
 
-
   return (
     <main className="app-shell">
       {
@@ -101,11 +100,11 @@ function App() {
 
 
         {userData && (
-          <ProfileCard userData={userData} username={username}/>
+          <ProfileCard userData={userData} username={username} />
         )}
         {/* Contribution Graph */}
         {calendar && (
-          <ContributionGraph calendar={calendar}/>
+          <ContributionGraph calendar={calendar} />
         )}
       </section>
     </main >

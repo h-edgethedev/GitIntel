@@ -300,6 +300,34 @@ h1 {
   color: var(--text-primary);
 }
 
+.contribution-stats-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.contribution-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.contribution-stat-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.contribution-avg {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  font-weight: 800;
+  color: var(--accent-cyan, #06b6d4);
+}
+
+
 .panel-copy {
   margin: 12px 0 0;
   color: var(--text-muted);
