@@ -37,6 +37,23 @@ export function ContributionGraph({ calendar }) {
         return maxDay
     }, null)
 
+    const streakData = contributionDays.reduce((streak, day) => {
+        if (day.contributionCount > 0) {
+            streak.current += 1
+            streak.longest = Math.max(streak.current, streak.longest)
+        }
+        else {
+            if (day !== contributionDays[contributionDays.length - 1]) {
+                streak.current = 0
+            }
+        }
+        return streak
+    }, {
+        current: 0, longest: 0
+    })
+
+    console.log(streakData)
+
     const formattedMostActiveDate = mostActiveDay?.date
         ? new Date(mostActiveDay.date + "T00:00:00").toLocaleDateString("en-US", {
             month: "short",
@@ -109,6 +126,22 @@ export function ContributionGraph({ calendar }) {
                         <span className="analytics-subtext">
                             {formattedMostActiveDate || "No activity recorded"}
                         </span>
+                    </div>
+                    <div className="analytics-card">
+                        <span className="analytics-label">&#x1F525; Longest streak</span>
+                        <strong className="analytics-value">{streakData.longest > 0
+                            ? `${streakData.longest}`
+                            : `0`
+                        } </strong>
+                        <span className="analytics-subtext">Days</span>
+                    </div>
+                    <div className="analytics-card">
+                        <span className="analytics-label">Current Streak</span>
+                        <strong className="analytics-value">{streakData.current > 0
+                            ? `${streakData.current}`
+                            : `0`}
+                        </strong>
+                        <span className="analytics-subtext">Days</span>
                     </div>
                 </div>
             </div>
