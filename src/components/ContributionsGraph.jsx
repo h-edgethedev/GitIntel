@@ -25,12 +25,12 @@ export function ContributionGraph({ calendar }) {
     const contributionDays = calendar?.weeks?.flatMap(week=> week.contributionDays) || []
     // console.log(contributionDays)
     const totalContribution = contributionDays.reduce((sum, day)=>{
-        return sum += day.contributionCount
+        return sum + day.contributionCount
     }, 0)
 
-    const averageContribution = (totalContribution/contributionDays.length).toFixed(2)
+    const averageContribution = contributionDays.length ? (totalContribution / contributionDays.length).toFixed(2) : "0.00"
+    const avgWeeklyContribution = calendar?.weeks?.length ? (totalContribution / calendar.weeks.length).toFixed(2) : "0.00"
     
-
     return (
         <section className="contribution-panel">
             <div className="panel-head">
@@ -43,6 +43,10 @@ export function ContributionGraph({ calendar }) {
                     <div className="contribution-stat">
                         <span className="contribution-stat-label">Avg / day</span>
                         <span className="contribution-avg">{averageContribution}</span>
+                    </div>
+                    <div className="contribution-stat">
+                        <span className="contribution-stat-label">Avg / week</span>
+                        <span className="contribution-avg">{avgWeeklyContribution}</span>
                     </div>
                 </div>
             </div>
