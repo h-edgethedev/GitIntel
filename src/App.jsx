@@ -29,7 +29,7 @@ function App() {
     const storedData = localStorage.getItem(cacheKey)
     const cachedData = storedData ? JSON.parse(storedData) : null
 
-    if (cachedData && cachedData.data && (Date.now() - cachedData.cachedAt) <= CONTRIBUTION_CACHE_TTL) {
+    if (cachedData && cachedData.data && (Date.now() - cachedData.cachedAt) <= PROFILE_CACHE_TTL) {
       setUserData(cachedData.data)
       console.log(`Data Obtained from local storage`)
       // console.log(userData)
@@ -65,10 +65,6 @@ function App() {
 
 
   }
-
-  const profileName = userData?.name || userData?.login || username
-  const profileBio = userData?.bio || "No bio provided yet."
-  // console.log(calendar)
 
   return (
     <main className="app-shell">
