@@ -22,15 +22,29 @@ export function ContributionGraph({ calendar }) {
         return labels
     })()
 
-    const contributionDays = calendar?.weeks?.flatMap(week=> week.contributionDays) || []
-    // console.log(contributionDays)
-    const totalContribution = contributionDays.reduce((sum, day)=>{
+    const contributionDays = calendar?.weeks?.flatMap(week => week.contributionDays) || []
+    const totalContribution = contributionDays.reduce((sum, day) => {
         return sum + day.contributionCount
     }, 0)
 
     const averageContribution = contributionDays.length ? (totalContribution / contributionDays.length).toFixed(2) : "0.00"
     const avgWeeklyContribution = calendar?.weeks?.length ? (totalContribution / calendar.weeks.length).toFixed(2) : "0.00"
-    
+
+    const mostActiveDay = contributionDays.reduce((maxDay, day) => {
+        if (!maxDay || day.contributionCount > maxDay.contributionCount) {
+            return day
+        }
+        return maxDay
+    }, null)
+
+    const formattedMostActiveDate = mostActiveDay?.date
+        ? new Date(mostActiveDay.date + "T00:00:00").toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        })
+        : null
+
     return (
         <section className="contribution-panel">
             <div className="panel-head">
@@ -39,14 +53,6 @@ export function ContributionGraph({ calendar }) {
                     <div className="contribution-stat">
                         <span className="contribution-stat-label">Total</span>
                         <span className="contribution-total">{calendar.totalContributions}</span>
-                    </div>
-                    <div className="contribution-stat">
-                        <span className="contribution-stat-label">Avg / day</span>
-                        <span className="contribution-avg">{averageContribution}</span>
-                    </div>
-                    <div className="contribution-stat">
-                        <span className="contribution-stat-label">Avg / week</span>
-                        <span className="contribution-avg">{avgWeeklyContribution}</span>
                     </div>
                 </div>
             </div>
@@ -77,6 +83,33 @@ export function ContributionGraph({ calendar }) {
                             ))
                         )
                     }
+                </div>
+            </div>
+
+            <div className="advanced-analytics">
+                <h3 className="analytics-title">Advanced Analytics</h3>
+                <div className="analytics-grid">
+                    <div className="analytics-card">
+                        <span className="analytics-label">Daily Average</span>
+                        <strong className="analytics-value">{averageContribution}</strong>
+                        <span className="analytics-subtext">contributions / day</span>
+                    </div>
+                    <div className="analytics-card">
+                        <span className="analytics-label">Weekly Average</span>
+                        <strong className="analytics-value">{avgWeeklyContribution}</strong>
+                        <span className="analytics-subtext">contributions / week</span>
+                    </div>
+                    <div className="analytics-card">
+                        <span className="analytics-label">Most Active Day</span>
+                        <strong className="analytics-value">
+                            {mostActiveDay && mostActiveDay.contributionCount > 0
+                                ? `${mostActiveDay.contributionCount} contribs`
+                                : "N/A"}
+                        </strong>
+                        <span className="analytics-subtext">
+                            {formattedMostActiveDate || "No activity recorded"}
+                        </span>
+                    </div>
                 </div>
             </div>
         </section>
