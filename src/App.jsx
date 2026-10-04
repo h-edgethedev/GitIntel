@@ -1,7 +1,7 @@
 import "./App.css"
 import { useState } from "react"
-import { fetchData } from "./fetchdata"
-import { getContributionData } from "./fetchContributions"
+import { fetchData } from "./services/fetchdata"
+import { getContributionData } from "./services/fetchContributions"
 import { ContributionGraph } from "./components/ContributionsGraph"
 import { ProfileCard } from "./components/ContributionData"
 const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
