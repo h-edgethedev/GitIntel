@@ -97,7 +97,7 @@ function App() {
 
 
         {userData && (
-          <ProfileCard userData={userData} username={username} />
+          <ProfileCard userData={userData} username={username} /> 
         )}
         {/* Contribution Graph */}
         {calendar && (
