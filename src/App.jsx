@@ -13,6 +13,7 @@ function App() {
   const [userData, setUserData] = useState(null)
   const [calendar, setCalendar] = useState(null)
   const [toast, setToast] = useState(null)
+  const searchHistory = JSON.parse(localStorage.getItem("username-search-history"))||[]
 
   const handleClick = async () => {
     if (username.trim() === "") {
@@ -62,8 +63,8 @@ function App() {
         console.log(`Contribution obtained from Github GraphQL`)
       }
     }
-
-
+    searchHistory.includes(username)? searchHistory: searchHistory.push(username)
+    localStorage.setItem("username-search-history", JSON.stringify(searchHistory))
   }
 
   return (
