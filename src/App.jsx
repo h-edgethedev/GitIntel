@@ -91,7 +91,7 @@ function App() {
           />
           <button id="analyze" type="button" onClick={handleClick} disabled={loading}>
             {loading ? "Analyzing..." : "Analyze"}
-          </button>
+          </button>  
           <div className={`loader ${loading ? "" : "hidden"}`}></div>
         </div>
 
