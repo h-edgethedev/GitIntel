@@ -11,6 +11,8 @@ export function SearchBar({ username, setUsername, id, placeholder, inputfunctio
                 onChange={e => { setUsername(e.target.value) }}
                 aria-label="Github Username search"
             />
+
+            <button type="button" id="analyze" onClick={buttonfunction}></button>
         </div>
     )
 }
