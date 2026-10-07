@@ -77,6 +77,27 @@ function App() {
     localStorage.setItem("username-search-history", JSON.stringify(searchHistory))
   }
 
+  const getFreshData = async () => {
+    await fetchData(userData.login, userData, loading, setUserData, setLoading)
+    console.log(`Data obtained from Github API`)
+    showToast("success", "Profile Data obtained from Github API")
+    const contributionData = await getContributionData(userData.login, loading, setLoading)
+    const contributionCalendar = contributionData?.data?.user?.contributionsCollection?.contributionCalendar
+    if (contributionCalendar) {
+      setCalendar(contributionCalendar)
+      localStorage.setItem(
+        contributionCacheKey,
+        JSON.stringify({
+          data: contributionCalendar,
+          cachedAt: Date.now()
+        })
+      )
+      console.log(`Contribution obtained from Github GraphQL`)
+      showToast("success", "Contribution Data obtained from Github API")
+    }
+
+  }
+
   return (
     <main className="app-shell">
       <div className="toast-container">
@@ -98,6 +119,12 @@ function App() {
           loading={loading}
           value={username}
         />
+
+       {userData && (<div className="fresh-data-action">
+          <button type="button" className="btn-force-api" onClick={getFreshData} disabled={loading}>
+            {loading ? "🔄 Fetching Fresh Data from GitHub API (Bypass Cache)" : "🔄 Fetch Fresh Data from GitHub API (Bypass Cache)"}
+          </button>
+        </div>)}
 
         {userData && (
           <ProfileCard userData={userData} username={username} />
