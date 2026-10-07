@@ -4,6 +4,7 @@ import { fetchData } from "./services/fetchdata"
 import { getContributionData } from "./services/fetchContributions"
 import { ContributionGraph } from "./components/ContributionsGraph"
 import { ProfileCard } from "./components/ContributionData"
+import { SearchBar } from "./components/Searchbar"
 const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
 const PROFILE_CACHE_TTL = 60 * 60 * 1000
 
@@ -79,22 +80,14 @@ function App() {
         <span className="eyebrow">Developer insights</span>
         <h1>GitIntel</h1>
         <p className="subtitle">Analyze a GitHub developer&apos;s profile and discover their coding activity.</p>
-        <div className="search-row">
-          <input
-            type="search"
-            name="search-input"
-            id="search-input"
-            placeholder="Input GitHub username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            aria-label="GitHub username"
-          />
-          <button id="analyze" type="button" onClick={handleClick} disabled={loading}>
-            {loading ? "Analyzing..." : "Analyze"}
-          </button>  
-          <div className={`loader ${loading ? "" : "hidden"}`}></div>
-        </div>
-
+        <SearchBar
+         id={"search-input"} 
+         placeholder={"Input Github Username e.g Torvalds"}
+         onchange={setUsername}
+         buttonfunction={handleClick}
+         loading={loading}
+         value={username}
+         />
 
         {userData && (
           <ProfileCard userData={userData} username={username} /> 

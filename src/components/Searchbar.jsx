@@ -1,18 +1,20 @@
 import { useState } from "react";
 
-export function SearchBar({ username, setUsername, id, placeholder, inputfunction, buttonfunction, loading, onClick }) {
+export function SearchBar({ value, id, placeholder, onchange, buttonfunction, loading}) {
 
     return (
         <div className="search-row">
             <input type="search"
                 id={id}
                 placeholder={placeholder}
-                value={username}
-                onChange={e => { setUsername(e.target.value) }}
+                value={value}
+                onChange={e => { onchange(e.target.value) }}
                 aria-label="Github Username search"
             />
-
-            <button type="button" id="analyze" onClick={buttonfunction}></button>
+            <button type="button" id="analyze" onClick={buttonfunction} disabled={loading}>
+                {loading? "Analyzing": "Analyze"}
+            </button>
+            <div className={`loader ${loading? "": "hidden"}`}></div>
         </div>
     )
 }
