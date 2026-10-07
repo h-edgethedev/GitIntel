@@ -13,15 +13,20 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [userData, setUserData] = useState(null)
   const [calendar, setCalendar] = useState(null)
-  const [toast, setToast] = useState(null)
-  const searchHistory = JSON.parse(localStorage.getItem("username-search-history"))||[]
+  const [toasts, setToasts] = useState([])
+  const searchHistory = JSON.parse(localStorage.getItem("username-search-history")) || []
+
+  const showToast = (type, message) => {
+    const id = Date.now() + Math.random()
+    setToasts((prev) => [...prev, { id, type, message }])
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id))
+    }, 2800)
+  }
 
   const handleClick = async () => {
     if (username.trim() === "") {
-      setToast("Please enter a Github username")
-      setTimeout(() => {
-        setToast("")
-      }, 2000)
+      showToast("error", "Please enter a Github username")
       return
     }
 
@@ -35,10 +40,12 @@ function App() {
       setUserData(cachedData.data)
       console.log(`Data Obtained from local storage`)
       // console.log(userData)
+      showToast("success", "Profile Data obtained from Local Storage")
     }
     else {
       await fetchData(username, userData, loading, setUserData, setLoading)
       console.log(`Data obtained from Github API`)
+      showToast("success", "Profile Data obtained from Github API")
     }
     // Fetching and storing Contribution Data
     const contributionCacheKey = `github-contributions-${username.trim().toLowerCase()}`
@@ -47,6 +54,7 @@ function App() {
     if (contributionCacheData && contributionCacheData.data && (Date.now() - contributionCacheData.cachedAt) <= CONTRIBUTION_CACHE_TTL) {
       setCalendar(contributionCacheData.data)
       console.log(`Contribution Data obtained from Local storage`)
+      showToast("success", "Contribution Data obtained from Local Storage")
     }
 
     else {
@@ -62,35 +70,37 @@ function App() {
           })
         )
         console.log(`Contribution obtained from Github GraphQL`)
+        showToast("success", "Contribution Data obtained from Github API")
       }
     }
-    searchHistory.includes(username)? searchHistory: searchHistory.push(username)
+    searchHistory.includes(username) ? searchHistory : searchHistory.push(username)
     localStorage.setItem("username-search-history", JSON.stringify(searchHistory))
   }
 
   return (
     <main className="app-shell">
-      {
-        toast && (
-          <div className="toast">
-            {toast}
+      <div className="toast-container">
+        {toasts.map((toast) => (
+          <div key={toast.id} className={`toast toast-${toast.type || "info"}`}>
+            {toast.message}
           </div>
-        )}
+        ))}
+      </div>
       <section className="analyzer-card">
         <span className="eyebrow">Developer insights</span>
         <h1>GitIntel</h1>
         <p className="subtitle">Analyze a GitHub developer&apos;s profile and discover their coding activity.</p>
         <SearchBar
-         id={"search-input"} 
-         placeholder={"Input Github Username e.g Torvalds"}
-         onchange={setUsername}
-         buttonfunction={handleClick}
-         loading={loading}
-         value={username}
-         />
+          id={"search-input"}
+          placeholder={"Input Github Username e.g Torvalds"}
+          onchange={setUsername}
+          buttonfunction={handleClick}
+          loading={loading}
+          value={username}
+        />
 
         {userData && (
-          <ProfileCard userData={userData} username={username} /> 
+          <ProfileCard userData={userData} username={username} />
         )}
         {/* Contribution Graph */}
         {calendar && (
