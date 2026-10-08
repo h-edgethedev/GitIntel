@@ -14,7 +14,13 @@ function App() {
   const [userData, setUserData] = useState(null)
   const [calendar, setCalendar] = useState(null)
   const [toasts, setToasts] = useState([])
-  const searchHistory = JSON.parse(localStorage.getItem("username-search-history")) || []
+  const [searchHistory, setSearchHistory] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("username-search-history")) || []
+    } catch {
+      return []
+    }
+  })
 
   const showToast = (type, message) => {
     const id = Date.now() + Math.random()
@@ -73,8 +79,16 @@ function App() {
         showToast("success", "Contribution Data obtained from Github API")
       }
     }
-    searchHistory.includes(username) ? searchHistory : searchHistory.push(username)
-    localStorage.setItem("username-search-history", JSON.stringify(searchHistory))
+    const searchedUsername = username.toLowerCase().trim()
+    setSearchHistory(previousHistory => {
+      const updatedHistory = [
+        searchedUsername,
+        ...previousHistory.filter((name => name.toLowerCase().trim() !== searchedUsername))
+      ].slice(0, 20)
+      localStorage.setItem("username-search-history", JSON.stringify(updatedHistory))
+
+      return updatedHistory
+    })
   }
 
   const getFreshData = async () => {
@@ -120,7 +134,7 @@ function App() {
           value={username}
         />
 
-       {userData && (<div className="fresh-data-action">
+        {userData && (<div className="fresh-data-action">
           <button type="button" className="btn-force-api" onClick={getFreshData} disabled={loading}>
             {loading ? "🔄 Fetching Fresh Data from GitHub API (Bypass Cache)" : "🔄 Fetch Fresh Data from GitHub API (Bypass Cache)"}
           </button>
