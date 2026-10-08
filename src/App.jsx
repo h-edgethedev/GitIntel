@@ -84,7 +84,7 @@ function App() {
       const updatedHistory = [
         searchedUsername,
         ...previousHistory.filter((name => name.toLowerCase().trim() !== searchedUsername))
-      ].slice(0, 20)
+      ].slice(0, 6)
       localStorage.setItem("username-search-history", JSON.stringify(updatedHistory))
 
       return updatedHistory
