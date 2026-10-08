@@ -1,6 +1,7 @@
 export function ProfileCard({ userData, username }) {
     const profileName = userData?.name || userData?.login || username
     const profileBio = userData?.bio || "No bio provided yet."
+
     return (
         <section className="results-card">
             <div className="profile-main-grid">
@@ -37,7 +38,6 @@ export function ProfileCard({ userData, username }) {
                             <strong>{userData.public_repos}</strong>
                         </div>
                     </div>
-                    <button id="refresh">Refresh Data</button>
                 </div>
             </div>
         </section>

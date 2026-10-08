@@ -55,7 +55,7 @@ export function ContributionGraph({ calendar }) {
         current: 0, longest: 0
     })
 
-    console.log(streakData)
+    // console.log(streakData)
 
     const formattedMostActiveDate = mostActiveDay?.date
         ? new Date(mostActiveDay.date + "T00:00:00").toLocaleDateString("en-US", {
