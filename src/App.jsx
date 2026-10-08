@@ -132,6 +132,7 @@ function App() {
           buttonfunction={handleClick}
           loading={loading}
           value={username}
+          searchHistory={searchHistory}
         />
 
         {userData && (<div className="fresh-data-action">
