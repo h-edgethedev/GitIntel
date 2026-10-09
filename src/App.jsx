@@ -5,6 +5,7 @@ import { getContributionData } from "./services/fetchContributions"
 import { ContributionGraph } from "./components/ContributionsGraph"
 import { ProfileCard } from "./components/ContributionData"
 import { SearchBar } from "./components/Searchbar"
+import { Analytics } from "@vercel/analytics/react" 
 const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
 const PROFILE_CACHE_TTL = 60 * 60 * 1000
 
