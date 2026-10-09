@@ -1,4 +1,63 @@
+import { useRef, useEffect } from "react";
+
 export function ContributionGraph({ calendar }) {
+    const graphScrollRef = useRef(null);
+
+    // Slowly and gently scroll to the right when graph comes into view on mobile
+    useEffect(() => {
+        const el = graphScrollRef.current;
+        if (!el) return;
+
+        let hasScrolled = false;
+        let animId = null;
+
+        const slowScrollTo = (element, targetLeft, duration = 1800) => {
+            const startLeft = element.scrollLeft;
+            const distance = targetLeft - startLeft;
+            const startTime = performance.now();
+
+            const step = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // EaseInOutQuad curve for a gentle, luxurious scroll
+                const ease = progress < 0.5
+                    ? 2 * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+                element.scrollLeft = startLeft + (distance * ease);
+
+                if (progress < 1) {
+                    animId = requestAnimationFrame(step);
+                }
+            };
+
+            animId = requestAnimationFrame(step);
+        };
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !hasScrolled) {
+                        hasScrolled = true;
+                        const maxScroll = el.scrollWidth - el.clientWidth;
+                        if (maxScroll > 20) {
+                            setTimeout(() => {
+                                slowScrollTo(el, maxScroll, 1800);
+                            }, 400);
+                        }
+                    }
+                });
+            },
+            { threshold: 0.35 }
+        );
+
+        observer.observe(el);
+        return () => {
+            observer.disconnect();
+            if (animId) cancelAnimationFrame(animId);
+        };
+    }, [calendar]);
+
     const monthLabels = (() => {
         if (!calendar?.weeks?.length) return []
         const labels = []
@@ -77,7 +136,7 @@ export function ContributionGraph({ calendar }) {
                 </div>
             </div>
             <p className="panel-copy">Total contributions recorded in the last year.</p>
-            <div className="contribution-graph">
+            <div className="contribution-graph" ref={graphScrollRef}>
                 <div className="month-row">
                     {
                         monthLabels.map((month) => (

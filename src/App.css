@@ -46,23 +46,32 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
   font-family: Inter, "Segoe UI", sans-serif;
   color: var(--text-primary);
   background: var(--bg-1);
+  -webkit-text-size-adjust: 100%;
 }
 
 .app-shell {
   min-height: 100vh;
+  width: 100%;
   display: grid;
   place-items: center;
   padding: 32px 20px;
   background: var(--bg-1);
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .analyzer-card {
   width: min(100%, 980px);
+  max-width: 100%;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 28px;
@@ -70,6 +79,7 @@ body {
   backdrop-filter: blur(12px);
   padding: 32px 36px;
   text-align: left;
+  box-sizing: border-box;
 }
 
 .top-bar {
@@ -672,6 +682,7 @@ h1 {
   display: grid;
   gap: 10px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: 8px;
 }
 
@@ -713,132 +724,196 @@ h1 {
 
 @media (max-width: 640px) {
   .app-shell {
-    padding: 16px 12px 28px;
+    padding: 12px 10px 20px;
+    display: block;
+    width: 100%;
+    min-height: 100vh;
   }
 
   .analyzer-card {
-    padding: 20px 16px;
-    border-radius: 20px;
+    width: 100%;
+    padding: 16px 12px;
+    border-radius: 18px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    padding: 4px 8px;
+    font-size: 0.65rem;
   }
 
   h1 {
-    font-size: 2.35rem;
-    margin: 14px 0 8px;
+    font-size: 1.85rem;
+    margin: 10px 0 4px;
   }
 
   .subtitle {
-    font-size: 0.92rem;
-    margin-bottom: 20px;
+    font-size: 0.82rem;
+    margin-bottom: 14px;
+    line-height: 1.4;
   }
 
   .profile-main-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px;
   }
 
   .results-card,
   .contribution-panel {
-    padding: 16px;
-    border-radius: 18px;
-    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    margin-top: 12px;
   }
 
   .profile-header {
     align-items: center;
-    gap: 12px;
-  }
-
-  #avatar {
-    width: 58px;
-    height: 58px;
-    border-radius: 14px;
-  }
-
-  .profile-copy h2 {
-    font-size: 1.4rem;
-  }
-
-  .bio {
-    font-size: 0.92rem;
-  }
-
-  .meta-row {
-    gap: 8px;
-    font-size: 0.82rem;
-  }
-
-  .meta-row span {
-    padding: 6px 10px;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-
-  .stat-item {
-    padding: 12px 8px;
-    border-radius: 12px;
-    text-align: center;
-  }
-
-  .stat-label {
-    font-size: 0.68rem;
-  }
-
-  .stat-item strong {
-    font-size: 1.25rem;
-  }
-
-  .panel-head {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .contribution-stats-row {
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .contribution-total {
-    font-size: 1.8rem;
-  }
-
-  .search-row {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 10px;
     gap: 10px;
   }
 
+  #avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+
+  .profile-label {
+    font-size: 0.64rem;
+    margin-bottom: 2px;
+  }
+
+  .profile-copy h2 {
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+
+  .username {
+    font-size: 0.8rem;
+    margin-top: 2px;
+  }
+
+  .bio {
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .meta-row {
+    gap: 6px;
+    font-size: 0.75rem;
+  }
+
+  .meta-row span {
+    padding: 4px 8px;
+  }
+
+  .contribution-graph {
+    margin-top: 12px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    box-sizing: border-box;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .stat-item {
+    padding: 8px 4px;
+    border-radius: 10px;
+    text-align: center;
+    gap: 2px;
+  }
+
+  .stat-label {
+    font-size: 0.62rem;
+  }
+
+  .stat-item strong {
+    font-size: 1.05rem;
+  }
+
+  .panel-head {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .panel-tag {
+    padding: 4px 8px;
+    font-size: 0.64rem;
+  }
+
+  .panel-copy {
+    font-size: 0.8rem;
+    margin: 6px 0 0;
+  }
+
+  .contribution-stats-row {
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .contribution-total {
+    font-size: 1.35rem;
+  }
+
+  .contribution-stat-label {
+    font-size: 0.62rem;
+  }
+
+  .search-row {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 10px;
+    gap: 8px;
+    border-radius: 14px;
+  }
+
   #search-input {
-    font-size: 0.95rem;
-    padding: 4px 6px;
+    font-size: 0.86rem;
+    padding: 4px;
   }
 
   #analyze {
-    width: 100%;
-    padding: 12px;
+    width: auto;
+    padding: 10px 14px;
+    font-size: 0.84rem;
+    border-radius: 10px;
   }
 
   .btn-force-api {
     width: 100%;
     justify-content: center;
-    font-size: 0.8rem;
-    padding: 10px 12px;
+    font-size: 0.75rem;
+    padding: 8px 10px;
+    border-radius: 10px;
     text-align: center;
   }
 
+  .advanced-analytics {
+    margin-top: 16px;
+    padding-top: 14px;
+  }
+
+  .analytics-title {
+    font-size: 0.72rem;
+    margin-bottom: 10px;
+  }
+
   .app-footer {
-    margin-top: 24px;
-    padding: 16px 12px 6px;
-    gap: 8px;
+    margin-top: 20px;
+    padding: 14px 10px 4px;
+    gap: 6px;
   }
 
   .footer-content {
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
+    font-size: 0.8rem;
   }
 
   .footer-divider {
@@ -846,19 +921,8 @@ h1 {
   }
 
   .footer-subtext {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-align: center;
-  }
-}
-
-@media (max-width: 380px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .stat-item {
-    text-align: left;
-    padding: 10px 14px;
   }
 }
 
@@ -1159,13 +1223,43 @@ a:hover {
 
 @media (max-width: 768px) {
   .analytics-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .analytics-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .analytics-card {
+    padding: 12px 8px;
+    border-radius: 12px;
+    gap: 4px;
+    text-align: center;
+    align-items: center;
+  }
+
+  .analytics-label {
+    font-size: 0.65rem;
+    line-height: 1.2;
+  }
+
+  .analytics-value {
+    font-size: 1.15rem;
+  }
+
+  .analytics-subtext {
+    font-size: 0.68rem;
+    line-height: 1.1;
+  }
+}
+
+@media (max-width: 360px) {
+  .analytics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
