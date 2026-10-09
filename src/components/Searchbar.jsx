@@ -28,7 +28,7 @@ export function SearchBar({ value, id, placeholder, onchange, buttonfunction, lo
 
     const trimmedValue = value.trim();
     const filteredHistory = trimmedValue === ""
-        ? searchHistory.slice(0, 6)
+        ? searchHistory.slice(0, 5)
         : searchHistory.filter(username => username.toLowerCase().includes(trimmedValue.toLowerCase()));
 
     // Click outside to close suggestions

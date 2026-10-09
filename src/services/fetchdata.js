@@ -4,20 +4,18 @@ export const fetchData = async (username, userData, loading, setUserData, setLoa
     setLoading(true)
     try {
         const response = await axios.get(`${url}${username}`)
-        // console.log(response.data)
         const cacheData = {
             data: response.data,
             cachedAt: Date.now()
         }
-        console.log(response.data)       
         localStorage.setItem(`github-${username.trim().toLowerCase()}`, JSON.stringify(cacheData))
         setUserData(response.data)
-
+        return response.data
     } catch (error) {
         console.error(error.message)
         setUserData(null)
-    }
-    finally {
+        throw error
+    } finally {
         setLoading(false)
     }
 }

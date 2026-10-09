@@ -39,15 +39,13 @@ export const getContributionData = async (username, loading, setLoading) => {
                 }
             }
         )
-            setLoading(false)
-            // console.log(response.data)   
-            return response.data
-  
+        return response.data
     }
     catch (error) {
-        setLoading(false)
         console.error(error.response?.data || error.message)
+        throw error
     }
-    console.log("Token exists:", !!token)
-    console.log("Token length:", token?.length)
+    finally {
+        setLoading(false)
+    }
 }
