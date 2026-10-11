@@ -6,6 +6,8 @@ import { ContributionGraph } from "./components/ContributionsGraph"
 import { ProfileCard } from "./components/ContributionData"
 import { SearchBar } from "./components/Searchbar"
 import { Analytics } from "@vercel/analytics/react" 
+import { WeeklyContributionChart } from "./components/WeeklyContributionChart"
+
 const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
 const PROFILE_CACHE_TTL = 60 * 60 * 1000
 
@@ -236,6 +238,11 @@ function App() {
             </div>
           </div>
         )}
+        {
+          calendar && (
+            <WeeklyContributionChart calendar={calendar}/>
+          )
+        }
       </section>
 
       <footer className="app-footer">

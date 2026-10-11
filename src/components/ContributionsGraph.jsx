@@ -105,8 +105,8 @@ export function ContributionGraph({ calendar }) {
             if (day !== contributionDays[contributionDays.length - 1]) {
                 streak.current = 0
             }
-            else if(contributionDays[contributionDays.length - 1].contributionCount > 0){
-                streak.current ++
+            else if (contributionDays[contributionDays.length - 1].contributionCount > 0) {
+                streak.current++
             }
         }
         return streak
