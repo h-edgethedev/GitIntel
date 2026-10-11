@@ -120,7 +120,13 @@ export function WeeklyContributionChart({ calendar }) {
       </div>
 
       <div className="weekly-chart-wrapper">
-        <ResponsiveContainer width="100%" height={260}>
+        <ResponsiveContainer
+          width="100%"
+          height={260}
+          minWidth={0}
+          minHeight={260}
+          initialDimension={{ width: 800, height: 260 }}
+        >
           <AreaChart data={chartData} margin={{ top: 12, right: 10, left: -22, bottom: 4 }}>
             <defs>
               <linearGradient id="contributionGradient" x1="0" y1="0" x2="0" y2="1">
