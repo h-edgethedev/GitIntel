@@ -124,22 +124,6 @@ export function ContributionGraph({ calendar }) {
         })
         : null
 
-    function getWeeklyContribution(weeks) {
-        return weeks.map((week)=>{
-            return week.contributionDays.reduce((sum, day)=>{
-                sum+= day.contributionCount
-                return sum;
-            },0)
-        })
-    }
-
-    const weeklyContribution = getWeeklyContribution(calendar.weeks).map((contribution, index)=>{
-       return {
-            week : `week${index+1}`,
-            contributions: contribution
-        }
-    })
-console.log(weeklyContribution)
     return (
         <section className="contribution-panel">
             <div className="panel-head">
