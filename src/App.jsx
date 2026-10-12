@@ -5,7 +5,7 @@ import { getContributionData } from "./services/fetchContributions"
 import { ContributionGraph } from "./components/ContributionsGraph"
 import { ProfileCard } from "./components/ContributionData"
 import { SearchBar } from "./components/Searchbar"
-import { Analytics } from "@vercel/analytics/react" 
+import { Analytics } from "@vercel/analytics/react"
 import { WeeklyContributionChart } from "./components/WeeklyContributionChart"
 
 const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
@@ -62,6 +62,7 @@ function App() {
         fetchedUser = await fetchData(cleanUsername, userData, loading, setUserData, setLoading)
         console.log(`Data obtained from Github API`)
         showToast("success", "Profile Data obtained from Github API")
+        // console.log(userData)
       } catch (err) {
         setUserData(null)
         setCalendar(null)
@@ -71,6 +72,7 @@ function App() {
         setSearchError(errorMsg)
         showToast("error", errorMsg)
         return
+
       }
     }
 
@@ -240,7 +242,8 @@ function App() {
         )}
         {
           calendar && (
-            <WeeklyContributionChart calendar={calendar}/>
+            <WeeklyContributionChart calendar={calendar} />
+            
           )
         }
       </section>
