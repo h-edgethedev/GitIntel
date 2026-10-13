@@ -7,6 +7,7 @@ import { ProfileCard } from "./components/ContributionData"
 import { SearchBar } from "./components/Searchbar"
 import { Analytics } from "@vercel/analytics/react"
 import { WeeklyContributionChart } from "./components/WeeklyContributionChart"
+import { Link } from "react-router"
 
 const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
 const PROFILE_CACHE_TTL = 60 * 60 * 1000
@@ -176,6 +177,9 @@ function App() {
           </div>
         ))}
       </div>
+      <Link to="/about" className="about-button">
+        About Author
+      </Link>
       <section className="analyzer-card">
         <span className="eyebrow">Developer insights</span>
         <h1>GitIntel</h1>
@@ -243,7 +247,7 @@ function App() {
         {
           calendar && (
             <WeeklyContributionChart calendar={calendar} />
-            
+
           )
         }
       </section>
