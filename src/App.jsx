@@ -7,6 +7,7 @@ import { ProfileCard } from "./components/ContributionData"
 import { SearchBar } from "./components/Searchbar"
 import { Analytics } from "@vercel/analytics/react"
 import { WeeklyContributionChart } from "./components/WeeklyContributionChart"
+import { Link } from "react-router"
 
 const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
 const PROFILE_CACHE_TTL = 60 * 60 * 1000
@@ -177,7 +178,42 @@ function App() {
         ))}
       </div>
       <section className="analyzer-card">
-        <span className="eyebrow">Developer insights</span>
+        <div className="top-bar">
+          <span className="eyebrow">Developer insights</span>
+          <Link to="/about" className="about-button" title="Learn more about GitIntel">
+            <svg
+              className="about-button-icon"
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="16" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
+            </svg>
+            <span>About</span>
+            <svg
+              className="about-button-arrow"
+              viewBox="0 0 24 24"
+              width="12"
+              height="12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M7 17L17 7M7 7h10v10" />
+            </svg>
+          </Link>
+        </div>
         <h1>GitIntel</h1>
         <p className="subtitle">Analyze a GitHub developer&apos;s profile and discover their coding activity.</p>
         <SearchBar
@@ -243,7 +279,7 @@ function App() {
         {
           calendar && (
             <WeeklyContributionChart calendar={calendar} />
-            
+
           )
         }
       </section>
@@ -251,6 +287,10 @@ function App() {
       <footer className="app-footer">
         <div className="footer-content">
           <span className="footer-brand">GitIntel</span>
+          <span className="footer-divider">•</span>
+          <Link to="/about" className="footer-about-link">
+            About
+          </Link>
           <span className="footer-divider">•</span>
           <span>© {new Date().getFullYear()} All rights reserved.</span>
           <span className="footer-divider">•</span>
