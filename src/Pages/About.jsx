@@ -6,6 +6,25 @@ export function About() {
     return (
         <div>
             <main className="about-page">
+                <nav className="about-nav">
+                    <Link to="/" className="about-back-btn" title="Return to GitIntel Search">
+                        <svg
+                            viewBox="0 0 24 24"
+                            width="16"
+                            height="16"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        <span>Back to GitIntel</span>
+                    </Link>
+                </nav>
+
                 {/* Hero Section */}
                 <section className="about-hero">
                     <p className="about-eyebrow">GET TO KNOW GITINTEL</p>
@@ -110,7 +129,7 @@ export function About() {
 
                     <div className="author-card">
                         <div className="author-avatar">
-                            H
+                            <img src="src\assets\My picture.png" alt="Author's picture" className="author-avatar" />
                         </div>
 
                         <div className="author-info">
