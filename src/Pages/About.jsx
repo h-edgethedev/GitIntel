@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import "./About.css"
+import authorPicture from "../assets/My picture.png"
 
 export function About() {
     return (
@@ -129,7 +130,7 @@ export function About() {
 
                     <div className="author-card">
                         <div className="author-avatar">
-                            <img src="src/assets/My picture.png" alt="Author's picture" className="author-avatar" />
+                            <img src={authorPicture} alt="Author's picture" className="author-avatar" />
                         </div>
 
                         <div className="author-info">
