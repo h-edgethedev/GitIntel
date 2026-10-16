@@ -129,7 +129,7 @@ export function About() {
 
                     <div className="author-card">
                         <div className="author-avatar">
-                            <img src="src\assets\My picture.png" alt="Author's picture" className="author-avatar" />
+                            <img src="src/assets/My picture.png" alt="Author's picture" className="author-avatar" />
                         </div>
 
                         <div className="author-info">
