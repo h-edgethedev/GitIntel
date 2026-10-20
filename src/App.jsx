@@ -8,6 +8,7 @@ import { SearchBar } from "./components/Searchbar"
 import { Analytics } from "@vercel/analytics/react"
 import { WeeklyContributionChart } from "./components/WeeklyContributionChart"
 import { Link } from "react-router"
+import { fetchRepositoryData } from "./services/fetchRepositories"
 
 const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
 const PROFILE_CACHE_TTL = 60 * 60 * 1000
@@ -20,6 +21,7 @@ function App() {
   const [searchError, setSearchError] = useState(null)
   const [contributionError, setContributionError] = useState(null)
   const [toasts, setToasts] = useState([])
+  const [repoData, setRepoData] = useState([])
   const [searchHistory, setSearchHistory] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("username-search-history")) || []
@@ -42,7 +44,8 @@ function App() {
       showToast("error", "Please enter a Github username")
       return
     }
-
+    const fetchedRepoData = await fetchRepositoryData(cleanUsername, loading, setLoading, repoData, setRepoData)
+    console.log(fetchedRepoData)
     setCalendar(null)
     setSearchError(null)
     setContributionError(null)
