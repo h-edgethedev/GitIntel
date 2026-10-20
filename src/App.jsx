@@ -44,8 +44,13 @@ function App() {
       showToast("error", "Please enter a Github username")
       return
     }
-    const fetchedRepoData = await fetchRepositoryData(cleanUsername, loading, setLoading, repoData, setRepoData)
-    console.log(fetchedRepoData)
+    const fetchedRepoData = await fetchRepositoryData(cleanUsername, setLoading, setRepoData)
+    console.table(
+      fetchedRepoData.map(repo => ({
+        name: repo.name,
+        stars: repo.stargazers_count
+      }))
+    );
     setCalendar(null)
     setSearchError(null)
     setContributionError(null)

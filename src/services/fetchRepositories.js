@@ -1,24 +1,26 @@
 import axios from "axios"
 
-export const fetchRepositoryData = async (username, loading, setLoading, repoData, setRepoData) => {
-    const url = `https://api.github.com/users/${username}/repos`
+export const fetchRepositoryData = async (username, setLoading, setRepoData) => {
+    const url = `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
     setLoading(true)
-    try{
+    try {
         const response = await axios.get(url)
+        const repositories = response.data
+        const topRepos = [...repositories].sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 12)
         const cacheData = {
             data: response.data,
             cachedAt: Date.now()
         }
         // localStorage.setItem()
-        setRepoData(response.data)
-        return(response.data)
+        setRepoData(topRepos)
+        return (topRepos)
     }
-    catch(error){
+    catch (error) {
         console.error(error.message)
         setRepoData(null)
         throw error
     }
-    finally{
+    finally {
         setLoading(false)
     }
 }
