@@ -45,12 +45,7 @@ function App() {
       return
     }
     const fetchedRepoData = await fetchRepositoryData(cleanUsername, setLoading, setRepoData)
-    console.table(
-      fetchedRepoData.map(repo => ({
-        name: repo.name,
-        stars: repo.stargazers_count
-      }))
-    );
+    console.log(fetchedRepoData)
     setCalendar(null)
     setSearchError(null)
     setContributionError(null)
