@@ -17,7 +17,7 @@ export default function RepositoryCard({repository}){
                 {repository.description || "No description provided."}
             </p>
             <div className="repository-meta">
-                <span></span>
+                <span>{repository.langage} </span>
             </div>
         </article>
     )
