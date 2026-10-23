@@ -11,7 +11,13 @@ export default function RepositoryCard({repository}){
                         {repository.name}
                     </a>
                 </h3>
-                <span className="repository-star">repository.starga</span>
+                <span className="repository-star">repository.stargazers_count</span>                
+            </div>
+            <p className="repository-description">
+                {repository.description || "No description provided."}
+            </p>
+            <div className="repository-meta">
+                <span></span>
             </div>
         </article>
     )
