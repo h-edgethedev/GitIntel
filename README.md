@@ -15,8 +15,9 @@
 
 ---
 
-<!-- Replace with a real screenshot or GIF of the app. This is the single best upgrade you can make to this README. -->
-<!-- ![GitIntel preview](./public/preview.png) -->
+<p align="center">
+  <img src="./src/assets/home.png" alt="GitIntel home screen with search bar and profile card" width="90%" />
+</p>
 
 ## What is GitIntel?
 
@@ -26,15 +27,30 @@ It is useful for getting a quick feel for a developer's activity, whether you ar
 
 ## Features
 
-- **Profile overview**: avatar, bio, follower stats and key account details pulled from the GitHub REST API
-- **Contribution graph**: the familiar contribution calendar, fetched through the GitHub GraphQL API
-- **Weekly contribution chart**: contribution activity broken down week by week
+- **Profile overview**: avatar, bio, location, company, followers, following and repo count pulled from the GitHub REST API
+- **Contribution graph**: the familiar contribution calendar with a yearly total, fetched through the GitHub GraphQL API
+- **Advanced analytics**: daily average, weekly average, most active day, longest streak and current streak, all calculated from the contribution calendar
+- **Weekly contribution trends**: a smooth area chart of weekly volume with average per week, peak week and active weeks, so you can spot consistency and sprints
 - **Top repositories**: a user's repos ranked by stars
 - **Smart caching**: profile data is cached for 1 hour and contribution data for 10 minutes in `localStorage`, which keeps the app fast and protects against GitHub rate limits
 - **Force refresh**: a "Fetch Fresh Data" button bypasses the cache when you need live numbers
 - **Search history**: your last 20 searched usernames are remembered locally
 - **Friendly feedback**: toast notifications and clear error cards for missing users and unavailable data
 - **About page**: built-in page explaining the project (via React Router)
+
+## Screenshots
+
+### Contribution graph and advanced analytics
+
+<p align="center">
+  <img src="./src/assets/analytics.png" alt="Contribution calendar with daily average, weekly average, most active day and streak cards" width="90%" />
+</p>
+
+### Weekly contribution trends
+
+<p align="center">
+  <img src="./src/assets/trends.png" alt="Weekly contribution trend chart with average, peak and active weeks" width="90%" />
+</p>
 
 ## Tech Stack
 
@@ -100,6 +116,7 @@ To create a token, go to **GitHub → Settings → Developer settings → Person
 ```
 GitIntel/
 ├── public/
+├── screenshots/                    # README images
 ├── src/
 │   ├── components/
 │   │   ├── ContributionData        # Profile card
@@ -131,7 +148,6 @@ GitIntel/
 - [ ] Move GraphQL calls behind a serverless proxy so no token is exposed in the client
 - [ ] Language breakdown across repositories
 - [ ] Compare two developers side by side
-- [ ] Longest streak and most active day insights
 - [ ] Shareable profile links
 - [ ] Dark and light theme toggle
 
