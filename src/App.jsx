@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { WeeklyContributionChart } from "./components/WeeklyContributionChart"
 import { Link } from "react-router"
 import { fetchRepositoryData } from "./services/fetchRepositories"
+import RepositoryCard from "./components/RepositoryCard"
 
 const CONTRIBUTION_CACHE_TTL = 10 * 60 * 1000
 const PROFILE_CACHE_TTL = 60 * 60 * 1000
@@ -44,8 +45,6 @@ function App() {
       showToast("error", "Please enter a Github username")
       return
     }
-    const fetchedRepoData = await fetchRepositoryData(cleanUsername, setLoading, setRepoData)
-    console.log(fetchedRepoData)
     setCalendar(null)
     setSearchError(null)
     setContributionError(null)
@@ -54,7 +53,8 @@ function App() {
     const storedData = localStorage.getItem(cacheKey)
     const cachedData = storedData ? JSON.parse(storedData) : null
     let fetchedUser = null
-
+    let fetchedRepo = null
+    fetchedRepo = await fetchRepositoryData(cleanUsername, setLoading, setRepoData)
     if (cachedData && cachedData.data && (Date.now() - cachedData.cachedAt) <= PROFILE_CACHE_TTL) {
       fetchedUser = cachedData.data
       setUserData(cachedData.data)
@@ -285,6 +285,23 @@ function App() {
 
           )
         }
+        <section className="repository-section">
+          <h2>Top Repositories</h2>
+          <p>Ranked by Number of stars</p>
+          <div className="repository-grid">
+            {
+              repoData && repoData.length >0 ?(
+                repoData.map((repository)=>(
+                  <RepositoryCard 
+                  key={repository.id}
+                  repository={repository}/>
+                ))
+              ): (
+                <p>No repositories to display yet.</p>
+              )
+            }
+          </div>
+        </section>
       </section>
 
       <footer className="app-footer">
