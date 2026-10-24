@@ -22,7 +22,7 @@ function App() {
   const [searchError, setSearchError] = useState(null)
   const [contributionError, setContributionError] = useState(null)
   const [toasts, setToasts] = useState([])
-  const [repoData, setRepoData] = useState([])
+  const [repoData, setRepoData] = useState(null)
   const [searchHistory, setSearchHistory] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("username-search-history")) || []
@@ -285,7 +285,7 @@ function App() {
 
           )
         }
-        <section className="repository-section">
+       {userData && !loading &&( <section className="repository-section">
           <h2>Top Repositories</h2>
           <p>Ranked by Number of stars</p>
           <div className="repository-grid">
@@ -301,7 +301,7 @@ function App() {
               )
             }
           </div>
-        </section>
+        </section>)}
       </section>
 
       <footer className="app-footer">

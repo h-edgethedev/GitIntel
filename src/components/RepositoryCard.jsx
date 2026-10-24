@@ -17,7 +17,7 @@ export default function RepositoryCard({repository}){
                 {repository.description || "No description provided."}
             </p>
             <div className="repository-meta">
-                <span>{repository.langage || "Language not specified"} </span>
+                <span>{repository.language || "Language not specified"} </span>
                 <span>{repository.fork_counts} forks </span>
             </div>
         </article>
