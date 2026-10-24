@@ -1,4 +1,5 @@
 import axios from "axios"
+import { fetchRepositoryLanguageBytes } from "./fetchLanguageBytes"
 
 export const fetchRepositoryData = async (username, setLoading, setRepoData) => {
     const url = `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
@@ -12,8 +13,17 @@ export const fetchRepositoryData = async (username, setLoading, setRepoData) => 
             cachedAt: Date.now()
         }
         // localStorage.setItem()
-        setRepoData(topRepos)
-        return (topRepos)
+        const repowithLanguages = await Promise.all(
+            topRepos.map(async(repository)=>{
+                const languages = fetchRepositoryLanguageBytes(username, repository, setLoading)
+                return{
+                    ...repository, 
+                    languages: languages
+                }
+            })
+        )
+        setRepoData(repowithLanguages)
+        return (repowithLanguages)
     }
     catch (error) {
         console.error(error.message)

@@ -17,13 +17,13 @@ export const fetchRepositoryLanguageBytes = async (username, repoData, setLoadin
     const languages = response.data
     if(languages){
         const totalBytes = Object.values(languages).reduce(
-            (total, bytes)=> total +bytes, 0
+            (total, bytes)=> total + bytes, 0
         )
         if(totalBytes==0){
             return []
         }
-        return Object.entries(languages).map(([language, bytes]) => ({
-            language,
+        return Object.entries(languages).map(([name, bytes]) => ({
+            name,
             percentage: (bytes / totalBytes) * 100
         }))
     }
