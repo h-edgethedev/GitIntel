@@ -95,7 +95,7 @@ The app will be running at `http://localhost:5173`.
 Create a `.env` file in the project root:
 
 ```env
-VITE_GITHUB_TOKEN=your_github_personal_access_token
+GITHUB_TOKEN=your_github_personal_access_token
 ```
 
 > **Heads up:** variables prefixed with `VITE_` are bundled into the client-side JavaScript, which means anyone can read them in the browser. For local development with a read-only, no-scope token this is fine. For a public deployment, route GraphQL requests through a serverless function (for example a Vercel API route) so the token stays on the server.
