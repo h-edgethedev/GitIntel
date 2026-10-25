@@ -1,30 +1,26 @@
-import axios from "axios";
+import githubApi from "../api/githubapi";
 
-export const fetchRepositoryLanguageBytes = async (username, repoData, setLoading)=>{
-    const url= `https://api.github.com/repos/${username}/${repoData.name}/languages`
-    setLoading(true)
-    let response;
-    try{
-        response = await axios.get(url)
+export const fetchRepositoryLanguageBytes = async (username, repository) => {
+    if (!repository.language || repository.size === 0) {
+        return [];
     }
-    catch(error){
-        console.error(error)
-        throw error
+
+    const response = await githubApi.get(
+        `/repos/${username}/${repository.name}/languages`
+    )
+    const languageBytes = response.data;
+
+    const totalBytes = Object.values(languageBytes).reduce(
+        (total, bytes) => total + bytes,
+        0
+    );
+
+    if (totalBytes === 0) {
+        return [];
     }
-    finally{
-        setLoading(false)
-    }
-    const languages = response.data
-    if(languages){
-        const totalBytes = Object.values(languages).reduce(
-            (total, bytes)=> total + bytes, 0
-        )
-        if(totalBytes==0){
-            return []
-        }
-        return Object.entries(languages).map(([name, bytes]) => ({
-            name,
-            percentage: (bytes / totalBytes) * 100
-        }))
-    }
-}
+
+    return Object.entries(languageBytes).map(([name, bytes]) => ({
+        name,
+        percentage: (bytes / totalBytes) * 100
+    }));
+};

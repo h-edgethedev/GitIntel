@@ -14,6 +14,7 @@ const languageColors = {
 };
 
 export default function RepositoryCard({ repository }) {
+    const languages = Array.isArray(repository.languages) ? repository.languages : []
     return (
         <article className="repository-card">
             <div className="repository-card-header">
@@ -33,27 +34,27 @@ export default function RepositoryCard({ repository }) {
             </p>
             <div className="repository-meta">
                 <span>{repository.language || "Language not specified"} </span>
-                <span>{repository.fork_counts} forks </span>
+                <span>{repository.forks_count ?? 0} forks </span>
             </div>
             <div className="repository-languages">
                 <h4>Languages</h4>
-
-                <LanguageBar languages={repository.languages} />
-
+                <LanguageBar languages={languages} />
                 <div className="language-legend">
-                    {repository.languages.map((language) => (
-                        <span key={language.name}>
-                            <span
-                                className="language-dot"
-                                style={{
-                                    backgroundColor:
-                                        languageColors[language.name] || "#9CA3AF"
-                                }}
-                            />
-
-                            {language.name} {language.percentage.toFixed(1)}%
-                        </span>
-                    ))}
+                    {
+                        languages.map((language) => (
+                            <span className="language-name"
+                                key={language.name}
+                            >
+                                <span
+                                    className="language-dot"
+                                    style={{
+                                        backgroundColor: languageColors[language.name] || "#9CA3AF"
+                                    }}>
+                                    {language.name} {language.percentage.toFixed(1)}%
+                                </span>
+                            </span>
+                        ))
+                    }
                 </div>
             </div>
         </article>
