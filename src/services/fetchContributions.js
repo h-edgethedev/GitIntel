@@ -1,7 +1,4 @@
-import axios from "axios"
-const token = import.meta.env.VITE_GITHUB_TOKEN
-
-const graphQlUrl = "https://api.github.com/graphql"
+import githubApi from "../api/githubapi"
 export const getContributionData = async (username, loading, setLoading) => {
     setLoading(true)
     const query = `
@@ -27,18 +24,10 @@ export const getContributionData = async (username, loading, setLoading) => {
         username: username
     }
     try {
-        const response = await axios.post(
-            graphQlUrl,
-            {
-                query: query,
-                variables: variables,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        )
+        const response= await githubApi.post("/graphql", {
+            query,
+            variables
+        })
         return response.data
     }
     catch (error) {

@@ -1,9 +1,9 @@
-import axios from "axios"
+import githubApi from "../api/githubapi"
 const url = `https://api.github.com/users/`
 export const fetchData = async (username, userData, loading, setUserData, setLoading) => {
     setLoading(true)
     try {
-        const response = await axios.get(`${url}${username}`)
+        const response = await githubApi.get(`/users/${username}`)
         const cacheData = {
             data: response.data,
             cachedAt: Date.now()
