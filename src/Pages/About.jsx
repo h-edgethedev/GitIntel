@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router";
 import "./About.css"
 import authorPicture from "../assets/My picture.png"
 
 export function About() {
+    useEffect(() => {
+        try {
+            localStorage.setItem("gitintel_has_visited", "true");
+        } catch {
+            // Ignore storage errors in restricted/private browsing modes
+        }
+    }, []);
+
     return (
         <div>
             <main className="about-page">
