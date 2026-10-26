@@ -58,8 +58,6 @@ export function WeeklyContributionChart({ calendar }) {
   const allWeeksData = useMemo(() => {
     if (!calendar?.weeks?.length) return [];
 
-    let lastMonth = "";
-
     return calendar.weeks.map((week, index) => {
       const days = week.contributionDays || [];
       const weekContributions = days.reduce(
@@ -72,19 +70,14 @@ export function WeeklyContributionChart({ calendar }) {
 
       let dateRange = "";
       let monthName = "";
-      let isFirstOfWeekInMonth = false;
 
       if (firstDay) {
-        const dStart = new Date(firstDay + "T00:00:00");
-        const currentMonth = dStart.toLocaleDateString("en-US", { month: "short" });
-        if (currentMonth !== lastMonth) {
-          monthName = currentMonth;
-          lastMonth = currentMonth;
-          isFirstOfWeekInMonth = true;
-        }
+        // Append T12:00:00 to prevent timezone offsets shifting calendar dates across day boundaries
+        const dStart = new Date(firstDay + "T12:00:00");
+        monthName = dStart.toLocaleDateString("en-US", { month: "short" });
 
         if (lastDay) {
-          const dEnd = new Date(lastDay + "T00:00:00");
+          const dEnd = new Date(lastDay + "T12:00:00");
           dateRange = `${dStart.toLocaleDateString("en-US", { month: "short", day: "numeric" })} - ${dEnd.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`;
         } else {
           dateRange = dStart.toLocaleDateString("en-US", { month: "short", day: "numeric" });
@@ -95,7 +88,7 @@ export function WeeklyContributionChart({ calendar }) {
       let busiest = null;
       days.forEach((day) => {
         if (!busiest || (day.contributionCount || 0) > (busiest.contributionCount || 0)) {
-          const d = new Date(day.date + "T00:00:00");
+          const d = new Date(day.date + "T12:00:00");
           busiest = {
             date: day.date,
             dayName: d.toLocaleDateString("en-US", { weekday: "short" }),
@@ -106,9 +99,9 @@ export function WeeklyContributionChart({ calendar }) {
 
       return {
         weekIndex: index + 1,
+        weekKey: `week-${index + 1}`,
         displayWeek: `Week ${index + 1}`,
         shortWeek: `W${index + 1}`,
-        axisLabel: isFirstOfWeekInMonth ? monthName : "",
         monthName,
         dateRange,
         contributions: weekContributions,
@@ -126,9 +119,31 @@ export function WeeklyContributionChart({ calendar }) {
     }
 
     const rangeCount = parseInt(timeRange, 10);
-    const data = rangeCount < allWeeksData.length
+    const sliced = rangeCount < allWeeksData.length
       ? allWeeksData.slice(-rangeCount)
       : allWeeksData;
+
+    // Generate axis labels specifically for the displayed timeframe slice
+    let previousMonth = "";
+    const data = sliced.map((item, idx) => {
+      let axisLabel = "";
+      if (timeRange === "12") {
+        // In 3M mode, show short week name e.g. W41, W42...
+        axisLabel = item.shortWeek;
+      } else {
+        // Show month label only at the first week of that month in this slice
+        if (item.monthName && item.monthName !== previousMonth) {
+          axisLabel = item.monthName;
+          previousMonth = item.monthName;
+        }
+      }
+
+      return {
+        ...item,
+        chartIndex: idx,
+        axisLabel
+      };
+    });
 
     let total = 0;
     let peak = 0;
@@ -286,12 +301,16 @@ export function WeeklyContributionChart({ calendar }) {
               />
 
               <XAxis
-                dataKey={timeRange === "12" ? "shortWeek" : "axisLabel"}
+                dataKey="weekKey"
                 axisLine={{ stroke: "rgba(148, 163, 184, 0.15)" }}
                 tickLine={false}
                 tick={{ fill: "#94a9bd", fontSize: 11 }}
                 interval={0}
                 dy={6}
+                tickFormatter={(value, index) => {
+                  const item = chartData[index];
+                  return item ? item.axisLabel : "";
+                }}
               />
 
               <YAxis
@@ -341,12 +360,16 @@ export function WeeklyContributionChart({ calendar }) {
               />
 
               <XAxis
-                dataKey={timeRange === "12" ? "shortWeek" : "axisLabel"}
+                dataKey="weekKey"
                 axisLine={{ stroke: "rgba(148, 163, 184, 0.15)" }}
                 tickLine={false}
                 tick={{ fill: "#94a9bd", fontSize: 11 }}
                 interval={0}
                 dy={6}
+                tickFormatter={(value, index) => {
+                  const item = chartData[index];
+                  return item ? item.axisLabel : "";
+                }}
               />
 
               <YAxis
